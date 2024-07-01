@@ -1,4 +1,3 @@
-
 import pygame
 
 # Define colors
@@ -8,6 +7,7 @@ GRAY = (200, 200, 200)
 LIGHT_GRAY = (170, 170, 170)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
 
 class Square:
     def __init__(self, x, y, size, color):
@@ -18,11 +18,22 @@ class Square:
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
 
-    def handle_click(self):
-        if self.color == self.default_color:
+    def handle_click(self, sq_type):
+        if sq_type == 0:
+            self.color = GREEN
+        
+        elif sq_type == 1:
             self.color = RED
+
+        elif sq_type == 2:
+            self.color = BLUE
+
+        elif sq_type == 3:
+            self.color = LIGHT_GRAY
+
         else:
-            self.color = self.default_color
+            self.color = BLACK
+
 
 class Button:
     def __init__(self, x, y, width, height, text, color, hover_color, text_color):
@@ -70,19 +81,19 @@ def switchScreen(screen, page):
     if page == 0:
         screen.fill((255, 255, 255))
     elif page == 1:
-        screen.fill((0, 0, 0))
+        screen.fill((255, 255, 255))
     elif page == 2:
-        screen.fill((255, 255, 0))
+        screen.fill((255, 255, 255))
 
 # Create grid
-def create_grid(rows, cols, size, margin):
+def create_grid(rows, cols, size, margin, start_x, start_y):
     grid = []
     for row in range(rows):
         grid_row = []
         for col in range(cols):
-            x = col * (size + margin) + margin
-            y = row * (size + margin) + margin
-            square = Square(x, y, size, BLUE)
+            x = start_x + col * (size + margin)
+            y = start_y + row * (size + margin)
+            square = Square(x, y, size, RED)
             grid_row.append(square)
         grid.append(grid_row)
     return grid
@@ -98,11 +109,14 @@ button2 = Button(400, 600, 300, 100, 'Design', GRAY, LIGHT_GRAY, BLACK)
 button3 = Button(700, 600, 300, 100, 'Solution', GRAY, LIGHT_GRAY, BLACK)
 
 # Grid parameters
-grid_size = 100
+grid_size = 50
 grid_margin = 5
-rows = (screen.get_height() - 150) // (grid_size + grid_margin)
+button_height = 100
+rows = (screen.get_height() - button_height - 50) // (grid_size + grid_margin)
 cols = screen.get_width() // (grid_size + grid_margin)
-grid = create_grid(rows, cols, grid_size, grid_margin)
+start_x = (screen.get_width() - (cols * (grid_size + grid_margin) - grid_margin)) // 2
+start_y = (screen.get_height() - button_height - 50 - (rows * (grid_size + grid_margin) - grid_margin)) // 2
+grid = create_grid(rows, cols, grid_size, grid_margin, start_x, start_y)
 
 # Main loop
 running = True
@@ -116,7 +130,18 @@ while running:
             for row in grid:
                 for square in row:
                     if square.rect.collidepoint(event.pos):
-                        square.handle_click()
+                        square.handle_click(color_type)
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_0:
+                color_type = 0
+            elif event.key == pygame.K_1:
+                color_type = 1
+            elif event.key == pygame.K_2:
+                color_type = 2
+            elif event.key == pygame.K_3:
+                color_type = 3
+            elif event.key == pygame.K_4:
+                color_type = 4
         if button1.is_clicked(event):
             page = 0
         elif button2.is_clicked(event):
@@ -130,6 +155,8 @@ while running:
     button3.draw(screen)
 
     if page == 1:
+        draw_grid(grid, screen)
+    elif page == 2:
         draw_grid(grid, screen)
 
     pygame.display.flip()
