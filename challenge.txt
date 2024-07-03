@@ -1,4 +1,0 @@
-- 2D Matrix
-- Each cell in the matrix represents a location in the map
-- Each cell has a value that indicates the type of terrain on that location 
-- Implement a search algorithm (A*)
