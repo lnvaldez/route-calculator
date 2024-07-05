@@ -156,6 +156,7 @@ def run(stdscr):
 
         key = stdscr.getch()
 
+        #! Keys for cursor movement
         if key == curses.KEY_UP and cursor_y > 0:
             cursor_y -= 1
         elif key == curses.KEY_DOWN and cursor_y < rows - 1:
@@ -164,6 +165,8 @@ def run(stdscr):
             cursor_x -= 1
         elif key == curses.KEY_RIGHT and cursor_x < cols - 1:
             cursor_x += 1
+        #! Keys to add different characters to the grid
+        #* Start and end points
         elif key == ord('1'):  
             map_instance.set_cell(cursor_y, cursor_x, '⧇')
             if map_instance.start:
@@ -174,6 +177,7 @@ def run(stdscr):
             if map_instance.end:
                 map_instance.set_cell(map_instance.end[0], map_instance.end[1], '□')
             map_instance.end = (cursor_y, cursor_x)
+        #* Route, building, water, and construction characters
         elif key == ord('3'):
             map_instance.set_cell(cursor_y, cursor_x, '□')
         elif key == ord('4'):  
@@ -182,6 +186,7 @@ def run(stdscr):
             map_instance.set_cell(cursor_y, cursor_x, '○')
         elif key == ord('6'):  
             map_instance.set_cell(cursor_y, cursor_x, '△')
+        #! Keys to quit, initialize A* search and reset grid
         elif key == ord('q'):  
             break
         elif key == ord('a'):  
@@ -192,6 +197,7 @@ def run(stdscr):
                 for j in range(0, cols):
                     map_instance.set_cell(i, j, '□')
 
+    #! Update standard screen
     stdscr.clear()
     for y in range(rows):
         for x in range(cols):
@@ -211,4 +217,5 @@ def run(stdscr):
     stdscr.refresh()
     stdscr.getch()
 
+#! Initialization
 curses.wrapper(run)
