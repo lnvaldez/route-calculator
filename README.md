@@ -1,5 +1,7 @@
 <h1 align=center>Route Calculator</h1>
 
+![Interface](assets/screenshots/interface.png)
+
 ## Overview
 
 This project provides a visual interface for demonstrating pathfinding algorithms using the `curses` library in Python. The grid-based system allows users to set start and end points, place obstacles, and visualize the A\* pathfinding algorithm in action.
@@ -23,3 +25,8 @@ This project provides a visual interface for demonstrating pathfinding algorithm
 - a: Run the A\* pathfinding algorithm.
 - 0 : Reset the entire grid.
 - q: Quit the application.
+
+### More Screenshots
+
+![grid](assets/screenshots/grid.png)
+![solved_grid](assets/screenshots/solved_grid.png)
